@@ -1,0 +1,1101 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>微電影廣告 · 一週學會拍攝</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700&family=Bebas+Neue&family=Noto+Sans+TC:wght@300;400;500&family=Space+Mono&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0c0c0c;
+  --bg2: #141414;
+  --bg3: #1c1c1c;
+  --border: #2a2a2a;
+  --amber: #e8a020;
+  --amber-dim: #9a6a10;
+  --amber-glow: rgba(232,160,32,0.10);
+  --text: #d0c8b8;
+  --text-dim: #706860;
+  --text-bright: #f0e8d8;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:'Noto Sans TC',sans-serif;font-weight:300;line-height:1.8;min-height:100vh;padding-bottom:48px;}
+
+/* TOP BAR */
+#topbar{position:sticky;top:0;z-index:200;background:rgba(12,12,12,0.97);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);}
+.topbar-title{display:flex;align-items:center;gap:10px;padding:12px 16px 8px;}
+.logo-text{font-family:'Bebas Neue',sans-serif;font-size:19px;letter-spacing:2px;color:var(--text-bright);line-height:1;}
+.logo-sub{font-family:'Space Mono',monospace;font-size:7px;letter-spacing:2px;color:var(--amber);margin-top:2px;}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--amber);margin-left:auto;flex-shrink:0;animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.3;}}
+
+/* TAB SCROLL */
+.tab-scroll-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding:0 12px 10px;display:flex;gap:6px;align-items:center;}
+.tab-scroll-wrap::-webkit-scrollbar{display:none;}
+.tab-group{display:flex;gap:6px;flex-shrink:0;}
+.tab-sep{width:1px;background:var(--border);align-self:stretch;margin:0 3px;flex-shrink:0;}
+.tab-btn{display:flex;align-items:center;gap:4px;padding:5px 11px;border-radius:20px;border:1px solid var(--border);background:var(--bg2);color:var(--text-dim);font-size:12px;font-family:'Noto Sans TC',sans-serif;white-space:nowrap;cursor:pointer;transition:all 0.15s;flex-shrink:0;-webkit-tap-highlight-color:transparent;}
+.tab-btn.active{background:var(--amber);border-color:var(--amber);color:#000;font-weight:500;}
+.tab-btn.coming{opacity:0.35;cursor:default;}
+.tab-icon{font-size:12px;}
+
+/* HERO */
+.hero{padding:24px 18px 22px;border-bottom:1px solid var(--border);position:relative;overflow:hidden;}
+.hero::after{content:'FILM';position:absolute;right:-8px;bottom:-20px;font-family:'Bebas Neue',sans-serif;font-size:110px;color:rgba(232,160,32,0.04);line-height:1;pointer-events:none;}
+.hero-tag{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:3px;color:var(--amber);text-transform:uppercase;margin-bottom:8px;}
+.hero h2{font-family:'Noto Serif TC',serif;font-size:26px;font-weight:700;color:var(--text-bright);line-height:1.3;margin-bottom:8px;}
+.hero h2 em{font-style:normal;color:var(--amber);}
+.hero p{font-size:12.5px;color:var(--text-dim);line-height:1.9;}
+.hero-stats{display:flex;gap:24px;margin-top:18px;}
+.stat-num{font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--amber);line-height:1;}
+.stat-label{font-size:10px;color:var(--text-dim);margin-top:2px;}
+
+/* SECTIONS */
+.content-section{display:none;padding:0 16px;}
+.content-section.active{display:block;}
+.section-header{padding:20px 0 16px;border-bottom:1px solid var(--border);margin-bottom:16px;}
+.section-eyebrow{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:3px;color:var(--amber);text-transform:uppercase;margin-bottom:6px;}
+.section-title{font-family:'Noto Serif TC',serif;font-size:24px;font-weight:700;color:var(--text-bright);margin-bottom:6px;}
+.section-desc{font-size:12.5px;color:var(--text-dim);line-height:1.9;}
+
+/* CONTENT BLOCKS */
+.content-block{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:18px 14px;margin-bottom:14px;}
+.content-block h3{font-family:'Noto Serif TC',serif;font-size:14px;font-weight:600;color:var(--text-bright);margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;gap:7px;flex-wrap:wrap;line-height:1.6;}
+.content-block h4{font-size:12.5px;font-weight:500;color:var(--amber);margin:14px 0 5px;font-family:'Noto Serif TC',serif;}
+.content-block p{font-size:12.5px;color:var(--text);line-height:1.9;margin-bottom:8px;}
+.content-block ul{list-style:none;margin-bottom:8px;}
+.content-block ul li{font-size:12.5px;color:var(--text);line-height:1.8;padding:2px 0 2px 13px;position:relative;}
+.content-block ul li::before{content:'▸';position:absolute;left:0;color:var(--amber);font-size:9px;top:6px;}
+
+/* LEVEL BADGES */
+.level{display:inline-block;font-family:'Space Mono',monospace;font-size:7.5px;letter-spacing:1px;padding:2px 7px;border-radius:10px;text-transform:uppercase;flex-shrink:0;}
+.level-beginner{background:rgba(39,174,96,0.15);color:#3dba6f;border:1px solid rgba(39,174,96,0.3);}
+.level-mid{background:rgba(232,160,32,0.15);color:var(--amber);border:1px solid rgba(232,160,32,0.3);}
+.level-pro{background:rgba(192,57,43,0.15);color:#e06050;border:1px solid rgba(192,57,43,0.3);}
+
+/* FORMULA */
+.formula{background:#080808;border:1px solid var(--border);border-left:3px solid var(--amber);border-radius:4px;padding:12px 14px;font-family:'Space Mono',monospace;font-size:11px;color:var(--amber);margin:10px 0;line-height:1.9;overflow-x:auto;white-space:pre;}
+
+/* TABLES */
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:10px 0;border-radius:6px;border:1px solid var(--border);}
+.compare-table{width:100%;border-collapse:collapse;font-size:12px;min-width:360px;}
+.compare-table th{background:var(--bg3);color:var(--text-bright);font-family:'Space Mono',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;padding:9px 10px;text-align:left;border-bottom:1px solid var(--border);white-space:nowrap;}
+.compare-table td{padding:8px 10px;border-bottom:1px solid var(--border);color:var(--text);vertical-align:top;line-height:1.7;}
+.compare-table tr:last-child td{border-bottom:none;}
+.amber{color:var(--amber);font-weight:500;}
+
+/* TIPS & WARNINGS */
+.highlight-box{background:var(--amber-glow);border:1px solid rgba(232,160,32,0.2);border-radius:6px;padding:12px 14px;margin:10px 0;font-size:12.5px;color:var(--text);line-height:1.9;}
+.highlight-box strong{color:var(--amber);}
+.tip{background:rgba(39,174,96,0.06);border-left:3px solid #27ae60;padding:10px 12px;margin:10px 0;font-size:12px;color:var(--text);line-height:1.8;border-radius:0 6px 6px 0;}
+.warning{background:rgba(192,57,43,0.07);border-left:3px solid #c0392b;padding:10px 12px;margin:10px 0;font-size:12px;color:var(--text);line-height:1.8;border-radius:0 6px 6px 0;}
+
+/* CARDS 2x2 */
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0;}
+.card{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:12px 10px;}
+.card-icon{font-size:18px;margin-bottom:6px;}
+.card-title{font-family:'Noto Serif TC',serif;font-size:12px;font-weight:600;color:var(--text-bright);margin-bottom:4px;}
+.card-body{font-size:11px;color:var(--text-dim);line-height:1.7;}
+
+/* OVERVIEW GRID */
+.overview-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:16px;}
+.ov-item{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:14px 12px;cursor:pointer;transition:all 0.15s;-webkit-tap-highlight-color:transparent;}
+.ov-item:active{border-color:var(--amber-dim);background:var(--amber-glow);}
+.ov-item.locked{opacity:0.35;cursor:default;}
+.ov-icon{font-size:20px;margin-bottom:6px;}
+.ov-name{font-family:'Noto Serif TC',serif;font-size:13px;font-weight:600;color:var(--text-bright);margin-bottom:3px;}
+.ov-status{font-size:9px;color:var(--text-dim);font-family:'Space Mono',monospace;}
+.ov-status.available{color:var(--amber);}
+
+/* DAY BLOCKS */
+.day-block{margin-bottom:16px;}
+.day-label{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+.day-num{font-family:'Bebas Neue',sans-serif;font-size:38px;color:var(--border);line-height:1;}
+.day-tag{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:2px;color:var(--amber);text-transform:uppercase;}
+.day-title{font-family:'Noto Serif TC',serif;font-size:15px;font-weight:600;color:var(--text-bright);}
+.day-desc{font-size:12.5px;color:var(--text-dim);line-height:1.8;}
+
+
+
+
+
+
+
+
+/* LIGHT QUALITY COMPARISON */
+.light-compare{display:grid;grid-template-columns:1fr;gap:12px;margin:14px 0;}
+@media(min-width:520px){.light-compare{grid-template-columns:1fr 1fr;}}
+.light-card{background:var(--bg3);border:1px solid var(--border);border-radius:8px;overflow:hidden;}
+.light-card img{width:100%;height:auto;display:block;}
+.light-label{padding:10px 12px;}
+.light-title{font-family:'Space Mono',monospace;font-size:11px;color:var(--amber);letter-spacing:1px;font-weight:500;}
+.light-desc{font-size:11.5px;color:var(--text-dim);margin-top:3px;line-height:1.7;}
+
+/* LOG WORKFLOW */
+.log-workflow{display:grid;grid-template-columns:1fr;gap:12px;margin:14px 0;}
+.log-step{background:var(--bg3);border:1px solid var(--border);border-radius:8px;overflow:hidden;}
+.log-step img{width:100%;height:auto;display:block;}
+.log-step-label{padding:10px 12px;}
+.log-step-title{font-family:'Space Mono',monospace;font-size:11px;color:var(--amber);letter-spacing:1px;font-weight:500;}
+.log-step-desc{font-size:11.5px;color:var(--text-dim);margin-top:3px;line-height:1.7;}
+.log-arrow{text-align:center;font-family:'Space Mono',monospace;font-size:10px;letter-spacing:2px;color:var(--amber);padding:2px 0;}
+
+/* DoF COMPARISON */
+.dof-compare{display:grid;grid-template-columns:1fr;gap:12px;margin:14px 0;}
+@media(min-width:520px){.dof-compare{grid-template-columns:1fr 1fr;}}
+.dof-card{background:var(--bg3);border:1px solid var(--border);border-radius:8px;overflow:hidden;}
+.dof-card img{width:100%;height:auto;display:block;}
+.dof-label{padding:10px 12px;}
+.dof-title{font-family:'Space Mono',monospace;font-size:11px;color:var(--amber);letter-spacing:1px;font-weight:500;}
+.dof-desc{font-size:11.5px;color:var(--text-dim);margin-top:3px;line-height:1.7;}
+
+/* CAMERA MOVEMENT VIDEOS */
+.cam-video-block{margin:10px 0 14px;}
+.cam-video-wrap{border-radius:8px;overflow:hidden;border:1px solid var(--border);background:#000;position:relative;}
+.cam-video-wrap video{width:100%;height:auto;display:block;}
+.cam-video-label{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:2px;color:var(--amber);text-transform:uppercase;margin-top:8px;padding-left:2px;}
+
+/* COMPOSITION BLOCKS */
+.comp-block{margin:12px 0 14px;}
+.comp-img-wrap{border-radius:8px;overflow:hidden;border:1px solid var(--border);background:#0a0a0a;}
+.comp-img-wrap img{width:100%;height:auto;display:block;}
+.comp-label{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:2px;color:var(--amber);text-transform:uppercase;margin-top:8px;padding-left:2px;}
+
+/* NATURAL LIGHT SECTION */
+.diagram-full{margin:14px 0 8px;border-radius:8px;overflow:hidden;border:1px solid var(--border);background:#0a1018;}
+.diagram-full img{width:100%;height:auto;display:block;}
+.window-position-grid{display:grid;grid-template-columns:1fr;gap:12px;margin:14px 0;}
+@media(min-width:520px){.window-position-grid{grid-template-columns:1fr 1fr 1fr;}}
+.wp-card{background:var(--bg3);border:1px solid var(--border);border-radius:8px;overflow:hidden;}
+.wp-img{width:100%;height:auto;display:block;aspect-ratio:16/9;object-fit:cover;}
+.wp-label{padding:10px 12px;}
+.wp-title{font-family:'Noto Serif TC',serif;font-size:13px;font-weight:600;color:var(--text-bright);margin-bottom:3px;}
+.wp-mood{font-family:'Space Mono',monospace;font-size:10px;color:var(--amber);letter-spacing:1px;}
+.wp-desc{font-size:11.5px;color:var(--text-dim);margin-top:4px;line-height:1.7;}
+
+/* COLOR TEMPERATURE GRID */
+.color-temp-grid{display:grid;grid-template-columns:1fr;gap:12px;margin:14px 0;}
+@media(min-width:520px){.color-temp-grid{grid-template-columns:1fr 1fr;}}
+.ct-card{background:var(--bg3);border:1px solid var(--border);border-radius:8px;overflow:hidden;}
+.ct-img{width:100%;height:auto;display:block;}
+.ct-label{padding:10px 12px;}
+.ct-kelvin{font-family:'Space Mono',monospace;font-size:13px;color:var(--amber);font-weight:500;letter-spacing:1px;}
+.ct-mood{font-family:'Noto Serif TC',serif;font-size:13px;color:var(--text-bright);margin-top:2px;}
+.ct-use{font-size:11.5px;color:var(--text-dim);margin-top:3px;}
+
+
+/* ADVANCED LIGHTING EFFECT */
+.effect-block{margin:14px 0 8px;}
+.effect-img{width:100%;height:auto;display:block;border-radius:8px;border:1px solid var(--border);}
+.effect-caption{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:2px;color:var(--amber);text-transform:uppercase;margin-top:8px;padding-left:2px;}
+
+/* LIGHTING DIAGRAM IMAGES */
+.lighting-diagram{margin:14px 0 8px;border-radius:8px;overflow:hidden;border:1px solid var(--border);background:#0a1a1f;}
+.lighting-diagram img{width:100%;height:auto;display:block;}
+.diagram-caption{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:2px;color:var(--amber);text-transform:uppercase;margin-top:10px;padding-left:2px;}
+</style>
+</head>
+<body>
+
+<div id="topbar">
+  <div class="topbar-title">
+    <div>
+      <div class="logo-text">微電影廣告一週學會</div>
+      <div class="logo-sub">MICROFILM ACADEMY · v1.0</div>
+    </div>
+    <div class="dot"></div>
+  </div>
+  <div class="tab-scroll-wrap">
+    <div class="tab-group">
+      <div class="tab-btn active" onclick="showSection('home')"><span class="tab-icon">⊞</span>總覽</div>
+      <div class="tab-btn" onclick="showSection('devices')"><span class="tab-icon">📱</span>設備比較</div>
+    </div>
+    <div class="tab-sep"></div>
+    <div class="tab-group">
+      <div class="tab-btn" onclick="showSection('director')"><span class="tab-icon">🎬</span>導演</div>
+      <div class="tab-btn" onclick="showSection('camera')"><span class="tab-icon">📷</span>攝影</div>
+      <div class="tab-btn" onclick="showSection('lighting')"><span class="tab-icon">💡</span>燈光</div>
+      <div class="tab-btn" onclick="showSection('audio')"><span class="tab-icon">🎙</span>收音</div>
+    </div>
+    <div class="tab-sep"></div>
+    <div class="tab-group">
+      <div class="tab-btn" onclick="showSection('cam-gear')"><span class="tab-icon">🎥</span>攝影設備</div>
+      <div class="tab-btn" onclick="showSection('light-gear')"><span class="tab-icon">🔆</span>燈光設備</div>
+      <div class="tab-btn" onclick="showSection('audio-gear')"><span class="tab-icon">🎚</span>收音設備</div>
+    </div>
+    <div class="tab-sep"></div>
+    <div class="tab-group">
+      <div class="tab-btn coming"><span class="tab-icon">💄</span>化妝</div>
+      <div class="tab-btn coming"><span class="tab-icon">🎨</span>道具</div>
+      <div class="tab-btn coming"><span class="tab-icon">✂️</span>剪輯</div>
+      <div class="tab-btn coming"><span class="tab-icon">📣</span>宣傳</div>
+    </div>
+  </div>
+</div>
+
+<div class="hero">
+  <div class="hero-tag">Vol.1 · 拍攝技術全攻略</div>
+  <h2>用手機拍出<br><em>電影級</em>廣告片</h2>
+  <p>七天系統學習，從零基礎到完成一支質感微電影廣告。Samsung S22/S23 雙機拍攝完整指南。</p>
+  <div class="hero-stats">
+    <div><div class="stat-num">7</div><div class="stat-label">天學習計畫</div></div>
+    <div><div class="stat-num">4</div><div class="stat-label">核心技術</div></div>
+    <div><div class="stat-num">∞</div><div class="stat-label">持續更新</div></div>
+  </div>
+</div>
+
+<!-- HOME -->
+<section id="sec-home" class="content-section active">
+  <div class="section-header">
+    <div class="section-eyebrow">START HERE</div>
+    <div class="section-title">課程總覽</div>
+    <div class="section-desc">七天學習路徑。建議初學者按順序，也可依需求跳閱。</div>
+  </div>
+  <div class="content-block">
+    <h3>🗓 七天學習路徑</h3>
+    <div class="day-block"><div class="day-label"><div class="day-num">1</div><div><div class="day-tag">DAY ONE</div><div class="day-title">導演思維</div></div></div><div class="day-desc">學習如何「看」——從觀眾眼睛思考故事和畫面，建立鏡頭語言基本概念。</div></div>
+    <div class="day-block"><div class="day-label"><div class="day-num">2</div><div><div class="day-tag">DAY TWO</div><div class="day-title">攝影基礎</div></div></div><div class="day-desc">曝光三要素、構圖法則、景深控制，全部用手機實際操作練習。</div></div>
+    <div class="day-block"><div class="day-label"><div class="day-num">3</div><div><div class="day-tag">DAY THREE</div><div class="day-title">燈光入門</div></div></div><div class="day-desc">自然光的善用，三點布光實操，低成本打出高質感。</div></div>
+    <div class="day-block"><div class="day-label"><div class="day-num">4</div><div><div class="day-tag">DAY FOUR</div><div class="day-title">收音技術</div></div></div><div class="day-desc">為什麼聲音比畫面更重要？麥克風選擇、佈置、監聽完整教學。</div></div>
+    <div class="day-block"><div class="day-label"><div class="day-num">5</div><div><div class="day-tag">DAY FIVE</div><div class="day-title">設備整合</div></div></div><div class="day-desc">認識所有器材，完成雙機設定測試，確認完整工作流程。</div></div>
+    <div class="day-block"><div class="day-label"><div class="day-num">6</div><div><div class="day-tag">DAY SIX</div><div class="day-title">試拍練習</div></div></div><div class="day-desc">正式器材完整試拍，找出問題，確認拍攝當天流程。</div></div>
+    <div class="day-block"><div class="day-label"><div class="day-num">7</div><div><div class="day-tag">DAY SEVEN</div><div class="day-title">正式拍攝</div></div></div><div class="day-desc">執行拍攝當天SOP，素材即時備份，收工前確認清單。</div></div>
+  </div>
+  <div class="overview-grid">
+    <div class="ov-item" onclick="showSection('director')"><div class="ov-icon">🎬</div><div class="ov-name">導演</div><div class="ov-status available">● 可閱讀</div></div>
+    <div class="ov-item" onclick="showSection('camera')"><div class="ov-icon">📷</div><div class="ov-name">攝影</div><div class="ov-status available">● 可閱讀</div></div>
+    <div class="ov-item" onclick="showSection('lighting')"><div class="ov-icon">💡</div><div class="ov-name">燈光</div><div class="ov-status available">● 可閱讀</div></div>
+    <div class="ov-item" onclick="showSection('audio')"><div class="ov-icon">🎙</div><div class="ov-name">收音</div><div class="ov-status available">● 可閱讀</div></div>
+    <div class="ov-item" onclick="showSection('cam-gear')"><div class="ov-icon">🎥</div><div class="ov-name">攝影設備</div><div class="ov-status available">● 可閱讀</div></div>
+    <div class="ov-item" onclick="showSection('light-gear')"><div class="ov-icon">🔆</div><div class="ov-name">燈光設備</div><div class="ov-status available">● 可閱讀</div></div>
+    <div class="ov-item" onclick="showSection('audio-gear')"><div class="ov-icon">🎚</div><div class="ov-name">收音設備</div><div class="ov-status available">● 可閱讀</div></div>
+    <div class="ov-item" onclick="showSection('devices')"><div class="ov-icon">📱</div><div class="ov-name">設備比較</div><div class="ov-status available">● 可閱讀</div></div>
+    <div class="ov-item locked"><div class="ov-icon">💄</div><div class="ov-name">化妝造型</div><div class="ov-status">○ 即將推出</div></div>
+    <div class="ov-item locked"><div class="ov-icon">✂️</div><div class="ov-name">剪輯調色</div><div class="ov-status">○ 即將推出</div></div>
+  </div>
+</section>
+
+<!-- DIRECTOR -->
+<section id="sec-director" class="content-section">
+  <div class="section-header"><div class="section-eyebrow">Day 1 · 導演</div><div class="section-title">導演的眼睛</div><div class="section-desc">導演的工作是決定「觀眾在每一秒應該感受到什麼」。</div></div>
+
+  <div class="content-block">
+    <h3>🎯 <span class="level level-beginner">入門</span> 導演在做什麼？</h3>
+    <ul>
+      <li><strong>視覺翻譯</strong>：把劇本文字翻譯成攝影機能拍到的畫面</li>
+      <li><strong>情緒設計</strong>：設計觀眾每個時間點應有的情緒</li>
+      <li><strong>節奏控制</strong>：決定什麼時候快、慢、或沉默</li>
+      <li><strong>演員引導</strong>：用具體情境描述讓演員進入狀態</li>
+    </ul>
+    <div class="tip">💡 告訴演員「你很傷心」是抽象指令。告訴他「你剛知道爸爸不會出席婚禮，但還在辦公室，必須撐著」才是具體情境。</div>
+  </div>
+
+  <div class="content-block">
+    <h3>🔍 <span class="level level-beginner">入門</span> 景別說什麼話</h3>
+    <div class="table-wrap"><table class="compare-table">
+      <tr><th>景別</th><th>看到什麼</th><th>傳遞情感</th></tr>
+      <tr><td>大遠景</td><td>整個環境，人很小</td><td>孤立、渺小、壓迫</td></tr>
+      <tr><td>遠景</td><td>全身＋環境</td><td>建立空間感</td></tr>
+      <tr><td>中景</td><td>腰部以上</td><td>日常對話感</td></tr>
+      <tr><td>中近景</td><td>胸部以上</td><td>親密感、情緒聚焦</td></tr>
+      <tr><td class="amber">特寫</td><td>臉部填滿畫面</td><td>情緒爆發，看見內心</td></tr>
+      <tr><td>大特寫</td><td>眼睛/手/物件</td><td>強烈戲劇性</td></tr>
+    </table></div>
+    <div class="highlight-box"><strong>基本原則：</strong>一個場景至少三種景別。通常：遠景建立 → 中景動作 → 特寫情緒。</div>
+  </div>
+
+  <div class="content-block">
+    <h3>📐 <span class="level level-beginner">入門</span> 攝影機運動語言</h3>
+
+    <h4>固定鏡頭（Static）</h4>
+    <p>攝影機完全不動。給觀眾安全感，情緒沉澱多用固定。最基礎也最重要的鏡頭，廣告片中大量使用。</p>
+
+    <h4>推鏡（Dolly In）</h4>
+    <div class="cam-video-block">
+      <div class="cam-video-wrap">
+        <video src="videos/dolly-in.mp4" autoplay loop muted playsinline controls preload="metadata"></video>
+      </div>
+      <div class="cam-video-label">DOLLY IN · 向前推進</div>
+    </div>
+    <p>攝影機向前移動，逐漸靠近主體。強調重要性，讓觀眾更靠近角色內心。情緒升溫時的經典用法。</p>
+
+    <h4>拉鏡（Dolly Out）</h4>
+    <div class="cam-video-block">
+      <div class="cam-video-wrap">
+        <video src="videos/dolly-out.mp4" autoplay loop muted playsinline controls preload="metadata"></video>
+      </div>
+      <div class="cam-video-label">DOLLY OUT · 向後拉出</div>
+    </div>
+    <p>攝影機向後移動，主體變小，背景變多。製造疏離感、孤立感，常用在角色做出選擇、承受結果之後。</p>
+
+    <h4>橫移（Tracking）</h4>
+    <div class="cam-video-block">
+      <div class="cam-video-wrap">
+        <video src="videos/tracking.mp4" autoplay loop muted playsinline controls preload="metadata"></video>
+      </div>
+      <div class="cam-video-label">TRACKING · 平行追蹤</div>
+    </div>
+    <p>攝影機左右平行移動，跟隨主體。增加畫面的流動感與空間深度感。走路場景、對話場景都適用。</p>
+
+    <h4>手持（Handheld）</h4>
+    <div class="cam-video-block">
+      <div class="cam-video-wrap">
+        <video src="videos/handheld.mp4" autoplay loop muted playsinline controls preload="metadata"></video>
+      </div>
+      <div class="cam-video-label">HANDHELD · 有機晃動</div>
+    </div>
+    <p>輕微晃動感。紀實感、不安感、緊張感——但晃動要有控制，不是亂搖。衝突、追逐、主觀視角常用。</p>
+
+    <div class="formula">一人組運動鏡頭工具優先順序：
+穩定器（推/拉/追）
+滑軌（橫移/推拉）
+三腳架（固定）
+手持（輕微晃動）</div>
+  </div>
+
+  <div class="content-block">
+    <h3>🎭 <span class="level level-mid">進階</span> 引導演員的技術</h3>
+    <ul>
+      <li><strong>說情境，不說情緒</strong>：「你等了他三小時，快撐不住了」而非「你很累」</li>
+      <li><strong>給具體物理動作</strong>：「把手機放進口袋，深呼吸，再轉身」</li>
+      <li><strong>給對比參考</strong>：「比剛才再慢一點，像在水裡走路」</li>
+      <li><strong>重複到自然</strong>：第一次找感覺，第二次修正，第三次才是真的</li>
+    </ul>
+    <h4>一人同時顧攝影和演員</h4>
+    <ul>
+      <li>先跟演員走一遍，確認動線和情緒節點</li>
+      <li>架好攝影機，做好對焦，鎖定曝光</li>
+      <li>站在攝影機旁邊（不是後面），同時看演員和畫面</li>
+      <li>喊Action前最後一句話：給演員那個具體情境</li>
+    </ul>
+  </div>
+
+  <div class="content-block">
+    <h3>🧠 <span class="level level-mid">進階</span> 場面調度</h3>
+    <h4>畫框內的位置代表權力關係</h4>
+    <ul>
+      <li>畫面中央 → 主導感</li>
+      <li>畫面邊緣 → 弱勢、邊緣化</li>
+      <li>前景大、背景小 → 前景掌控情勢</li>
+      <li>人被框在門窗之間 → 被困住、受限制</li>
+    </ul>
+    <h4>顏色在畫面中說話</h4>
+    <ul>
+      <li>暖色（橙黃紅）→ 溫暖、危險、活力</li>
+      <li>冷色（藍綠）→ 孤立、理性、壓抑</li>
+      <li>對比色並排 → 衝突、張力</li>
+    </ul>
+  </div>
+
+  <div class="content-block">
+    <h3>🏆 <span class="level level-pro">高級</span> 建立視覺風格聖經</h3>
+    <ul>
+      <li><strong>參考板</strong>：收集20～30張目標感覺的圖片，找共同特徵</li>
+      <li><strong>色調決定</strong>：主色是什麼？teal & orange、冷藍、還是暖黃？</li>
+      <li><strong>景深風格</strong>：全片淺景深還是深景深？</li>
+      <li><strong>運動風格</strong>：以固定為主，還是流動感強？</li>
+    </ul>
+    <div class="tip">💡 推薦參考：泰國廣告（情感深度）、日本廣告（空間美學）、台灣人壽系列（本土情感連結）</div>
+  </div>
+</section>
+
+<!-- CAMERA -->
+<section id="sec-camera" class="content-section">
+  <div class="section-header"><div class="section-eyebrow">Day 2 · 攝影</div><div class="section-title">光與影的控制</div><div class="section-desc">按下錄影鍵前，先理解曝光、構圖、景深。</div></div>
+
+  <div class="content-block">
+    <h3>☀️ <span class="level level-beginner">入門</span> 曝光三要素</h3>
+    <h4>快門速度</h4>
+    <div class="formula">拍影片固定法則（快門 = 幀率 × 2）：
+24fps → 快門 1/50
+30fps → 快門 1/60
+60fps（慢動作）→ 快門 1/120</div>
+    <h4>光圈（f值）</h4>
+    <ul>
+      <li>f1.8 / f2.0 = 大光圈，背景虛化，電影感強</li>
+      <li>f5.6 / f8.0 = 小光圈，前後都清晰</li>
+      <li>手機主鏡頭通常固定在f1.8，不能調整</li>
+    </ul>
+    <h4>ISO感光度</h4>
+    <ul>
+      <li>白天室外：ISO 50～200</li>
+      <li>室內有燈：ISO 400～1600</li>
+      <li>夜間：盡量不超過 ISO 3200</li>
+    </ul>
+    <div class="warning">⚠️ 最常見的錯誤：讓手機自動控制所有參數。自動模式會讓兩台手機畫面對不上。拍攝前一定要手動鎖定所有參數。</div>
+  </div>
+
+  <div class="content-block">
+    <h3>🖼 <span class="level level-beginner">入門</span> 四個構圖法則</h3>
+
+    <h4>① 三分法則（最重要）</h4>
+    <div class="comp-block">
+      <div class="comp-img-wrap"><img src="images/rule-of-thirds.jpg" alt="三分法則"></div>
+      <div class="comp-label">RULE OF THIRDS · 九宮格四交叉點</div>
+    </div>
+    <p>把畫面想成九宮格，主體放在四個交叉點之一，而非正中央。人物的眼睛、關鍵物件、地平線，都是放在這些點或線上。製造視覺張力，讓畫面更有動感。</p>
+
+    <h4>② 引導線</h4>
+    <div class="comp-block">
+      <div class="comp-img-wrap"><img src="images/leading-lines.jpg" alt="引導線"></div>
+      <div class="comp-label">LEADING LINES · 自然線條引導視線</div>
+    </div>
+    <p>利用場景中現成的線條——道路、欄杆、建築邊緣、光影分界——把觀眾的視線引導到主體上。自然存在的線條比刻意擺設的更有力量。</p>
+
+    <h4>③ 前景框架</h4>
+    <div class="comp-block">
+      <div class="comp-img-wrap"><img src="images/foreground-framing.jpg" alt="前景框架"></div>
+      <div class="comp-label">FOREGROUND FRAMING · 畫面中的畫框</div>
+    </div>
+    <p>用前景物件（窗框、門框、樹枝、拱門）框住遠處主體。除了製造空間深度感，還會給觀眾一種「偷看」的窺視感，讓畫面有層次。</p>
+
+    <h4>④ 留白（Looking Room）</h4>
+    <div class="comp-block">
+      <div class="comp-img-wrap"><img src="images/looking-room.jpg" alt="留白 Looking Room"></div>
+      <div class="comp-label">LOOKING ROOM · 看向空間留白</div>
+    </div>
+    <p>人物看向的方向要留空間。如果角色看向右方，右側就要有足夠的空白。違反這個規則會讓畫面窒息——左邊這張圖，人物看向右，右側有空間呼吸；右邊這張，人物貼著右邊框，視線無處可去，畫面立刻感覺壓迫。</p>
+
+    <div class="tip">💡 構圖沒有對錯，只有「有沒有意圖」。打破規則是可以的，但你要知道你在打破它，而且知道為什麼。</div>
+  </div>
+
+  <div class="content-block">
+    <h3>🌀 <span class="level level-mid">進階</span> 手機製造淺景深</h3>
+    <p>景深就是畫面中「清晰範圍」的深淺。淺景深（主體清晰、背景虛化）是電影感最重要的來源之一。同一個場景，用不同光圈拍，感覺完全不同：</p>
+
+    <div class="dof-compare">
+      <div class="dof-card">
+        <img src="images/shallow-dof.jpg" alt="淺景深">
+        <div class="dof-label">
+          <div class="dof-title">SHALLOW DOF · 淺景深</div>
+          <div class="dof-desc">背景虛化、主體突出，電影感強，情緒集中在人物身上。</div>
+        </div>
+      </div>
+      <div class="dof-card">
+        <img src="images/deep-dof.jpg" alt="深景深">
+        <div class="dof-label">
+          <div class="dof-title">DEEP DOF · 深景深</div>
+          <div class="dof-desc">前後都清楚，環境交代完整，紀實感強，觀眾看見完整世界。</div>
+        </div>
+      </div>
+    </div>
+
+    <h4>如何用手機製造淺景深</h4>
+    <ul>
+      <li><strong>靠近主體</strong>：鏡頭越靠近，背景虛化越強</li>
+      <li><strong>拉開背景距離</strong>：主體和背景間距越遠，虛化越強</li>
+      <li><strong>使用主鏡頭（1x）</strong>：用腳靠近，不要用數位變焦</li>
+      <li><strong>避免人像模式</strong>：算法虛化有鋸齒，光學虛化更自然</li>
+    </ul>
+
+    <div class="diagram-full">
+      <img src="images/dof-formula.jpg" alt="淺景深公式示意圖">
+    </div>
+    <div class="diagram-caption">SHALLOW DOF FORMULA · 淺景深公式</div>
+    <p>手機主鏡頭光圈固定在 f/1.8，不能調整。要做出淺景深效果，靠的是「距離控制」——把鏡頭移近主體，同時把主體和背景拉開。</p>
+  </div>
+
+  <div class="content-block">
+    <h3>🎞 <span class="level level-mid">進階</span> LOG格式拍攝</h3>
+    <p>LOG是低對比、低飽和的格式，為後製調色保留最大空間。就像照片的RAW格式——拍出來時不好看，但給後製最大的發揮空間。</p>
+
+    <h4>LOG 工作流程：從原始素材到成片</h4>
+    <div class="log-workflow">
+      <div class="log-step">
+        <img src="images/log-raw.jpg" alt="LOG 原始素材">
+        <div class="log-step-label">
+          <div class="log-step-title">① LOG RAW · 原始素材</div>
+          <div class="log-step-desc">畫面灰灰的、低對比、低飽和。這是正常的——LOG 刻意把所有細節壓在中間調，保留最多亮部和暗部資訊。</div>
+        </div>
+      </div>
+      <div class="log-arrow">↓ 後製調色</div>
+      <div class="log-step">
+        <img src="images/log-graded.jpg" alt="LOG 調色完成">
+        <div class="log-step-label">
+          <div class="log-step-title">② GRADED · 調色完成</div>
+          <div class="log-step-desc">經過調色軟體（DaVinci Resolve 等）處理，對比、飽和度、色調全部重塑，做出電影感。這才是 LOG 格式的最終目的。</div>
+        </div>
+      </div>
+    </div>
+
+    <h4>對照組：標準模式直接拍</h4>
+    <div class="log-workflow">
+      <div class="log-step">
+        <img src="images/standard-mode.jpg" alt="標準模式直出">
+        <div class="log-step-label">
+          <div class="log-step-title">③ STANDARD MODE · 標準模式直出</div>
+          <div class="log-step-desc">手機自動處理完直接給你「堪用」的畫面。好處是拍完就能用，缺點是對比和顏色已被鎖定，後製空間很小。</div>
+        </div>
+      </div>
+    </div>
+
+    <h4>S22/S23 啟用 LOG 的方法</h4>
+    <ul>
+      <li>安裝 <strong>Expert RAW</strong>（Samsung官方免費）→ 選擇 Log 格式</li>
+      <li>或使用 <strong>Filmic Pro</strong>（付費）→ 選擇 Log-V2</li>
+    </ul>
+
+    <h4>該用哪個模式？決策流程</h4>
+    <div class="diagram-full">
+      <img src="images/log-decision.jpg" alt="LOG vs Standard 決策流程圖">
+    </div>
+    <div class="diagram-caption">DECISION FLOW · 選擇指南</div>
+
+    <div class="warning">⚠️ <strong>沒打算調色就不要拍 LOG。</strong>拍了 LOG 卻直接輸出，成品會灰灰的不好看。簡單的規則：會後製 → 拍 LOG；趕時間交件 → 拍標準模式。</div>
+  </div>
+
+  <div class="content-block">
+    <h3>🔬 <span class="level level-pro">高級</span> 攝影師的眼睛訓練</h3>
+    <ul>
+      <li><strong>看光</strong>：走在街上注意光從哪裡來，陰影方向，光的顏色和軟硬</li>
+      <li><strong>看構圖</strong>：把手機橫起來當取景器，練習「框」眼前的場景</li>
+      <li><strong>看電影</strong>：暫停每個好看的鏡頭，分析為什麼好看</li>
+    </ul>
+    <h4>推薦用來訓練眼睛的電影</h4>
+    <ul>
+      <li>《花樣年華》王家衛 — 構圖、色彩、慢快門</li>
+      <li>《寄生上流》奉俊昊 — 場面調度、階級象徵構圖</li>
+      <li>《大娛樂家》— 移動攝影、色彩對比</li>
+    </ul>
+  </div>
+</section>
+
+<!-- LIGHTING -->
+<section id="sec-lighting" class="content-section">
+  <div class="section-header"><div class="section-eyebrow">Day 3 · 燈光</div><div class="section-title">光塑造情緒</div><div class="section-desc">光不只是讓畫面夠亮。光決定情緒、時間、角色的心理狀態。</div></div>
+
+  <div class="content-block">
+    <h3>🌅 <span class="level level-beginner">入門</span> 硬光 vs 軟光</h3>
+    <p>同一個人、同一個角度，只是換了光源的大小，整個畫面的情緒就完全不同：</p>
+
+    <div class="light-compare">
+      <div class="light-card">
+        <img src="images/hard-light.jpg" alt="硬光">
+        <div class="light-label">
+          <div class="light-title">HARD LIGHT · 硬光</div>
+          <div class="light-desc">陰影銳利、對比強烈。戲劇性、衝突感、緊張感。適合情緒爆發或黑色電影感場景。</div>
+        </div>
+      </div>
+      <div class="light-card">
+        <img src="images/soft-light.jpg" alt="軟光">
+        <div class="light-label">
+          <div class="light-title">SOFT LIGHT · 軟光</div>
+          <div class="light-desc">陰影柔和、過渡自然。溫暖感、親密感、商業美感。廣告微電影最常用。</div>
+        </div>
+      </div>
+    </div>
+
+    <h4>為什麼會有軟硬差別？光源大小決定一切</h4>
+    <div class="diagram-full">
+      <img src="images/light-size.jpg" alt="光源大小決定軟硬度">
+    </div>
+    <div class="diagram-caption">LIGHT SIZE = LIGHT QUALITY · 光源大小決定軟硬</div>
+    <p><strong>光源相對於主體越大 → 光越軟</strong>。這是物理原理：大光源從多個角度包覆主體，陰影邊緣自然被擴散；小光源只從一個方向直射，陰影邊緣銳利。</p>
+    <ul>
+      <li><strong>硬光來源</strong>：正午太陽、裸燈泡、手電筒、小型 LED</li>
+      <li><strong>軟光來源</strong>：多雲天空、大面積窗戶、柔光箱、白牆反射</li>
+      <li><strong>硬光變軟光</strong>：在燈前加描圖紙、柔光布或大面積柔光箱，讓小光源變成大光源</li>
+    </ul>
+
+    <div class="highlight-box"><strong>廣告微電影幾乎都用軟光。</strong>軟光讓皮膚好看、情緒溫暖、觀眾有親近感。硬光保留給衝突、回憶、噩夢、審訊等特殊戲劇場景。</div>
+  </div>
+
+  <div class="content-block">
+    <h3>🪟 <span class="level level-beginner">入門</span> 自然光：最好的免費燈具</h3>
+
+    <h4>如何挑選一個好的窗戶</h4>
+    <ul>
+      <li>面積夠大（落地窗最好）</li>
+      <li>北面最穩定，東面早上好，西面下午好</li>
+      <li>有薄白窗簾可柔化直射陽光</li>
+      <li>周圍沒有其他顏色的光源干擾</li>
+    </ul>
+
+    <div class="diagram-full">
+      <img src="images/window-orientation.jpg" alt="窗戶方位與時段指南">
+    </div>
+    <div class="diagram-caption">WINDOW ORIENTATION · 窗戶方位指南</div>
+    <p>北面窗全天光線最穩定柔和，是拍攝首選。東面窗適合上午9～11點，西面窗適合下午3～5點。南面窗正午陽光直射過強，需要窗簾柔化，否則容易過曝。</p>
+
+    <h4>人與窗的三種位置</h4>
+    <p>同一個人，只是改變他相對於窗戶的方向，整個畫面的情緒就完全不同：</p>
+
+    <div class="window-position-grid">
+      <div class="wp-card">
+        <img class="wp-img" src="images/facing-window.jpg" alt="面對窗">
+        <div class="wp-label">
+          <div class="wp-title">面對窗</div>
+          <div class="wp-mood">FACING · 溫暖 坦誠</div>
+          <div class="wp-desc">臉部均勻受光，無明顯陰影。適合輕快、開朗、日常對話場景。</div>
+        </div>
+      </div>
+      <div class="wp-card">
+        <img class="wp-img" src="images/side-window.jpg" alt="側對窗">
+        <div class="wp-label">
+          <div class="wp-title">側對窗</div>
+          <div class="wp-mood">SIDE · 思考 深沉</div>
+          <div class="wp-desc">一半亮一半暗，立體感強。適合內省、思考、情緒複雜的場景。</div>
+        </div>
+      </div>
+      <div class="wp-card">
+        <img class="wp-img" src="images/back-window.jpg" alt="背對窗">
+        <div class="wp-label">
+          <div class="wp-title">背對窗</div>
+          <div class="wp-mood">BACK · 神秘 詩意</div>
+          <div class="wp-desc">輪廓光效果，臉部偏暗。需要反光板補光，否則臉會全黑。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="content-block">
+    <h3>💡 <span class="level level-beginner">入門</span> 三點布光步驟</h3>
+    <div class="formula">三點布光位置：
+
+      [背光 Hair Light]
+             ↓
+[主光] ──── 人物 ──── [補光]
+ 45度角              主光40-60%亮度
+ 高於眼睛水平        可用反光板代替</div>
+    <h4>Step 1：主光（Key Light）</h4>
+    <div class="lighting-diagram"><img src="images/step1-key-light.jpg" alt="Key Light Stage"></div>
+    <div class="diagram-caption">STAGE 1 · 只有主光</div>
+    <p>人物前方45度角，高度比頭頂高15～20度。先只開這盞調好，其他都關掉。這時臉的一側會有明顯陰影——正常。</p>
+
+    <h4>Step 2：補光（Fill Light）</h4>
+    <div class="lighting-diagram"><img src="images/step2-key-fill.jpg" alt="Key + Fill Light Stage"></div>
+    <div class="diagram-caption">STAGE 2 · 主光 + 補光</div>
+    <p>放在主光對面，亮度約40～60%。可用反光板代替。讓陰影有層次但不死黑。兩側受光，但主光側仍然較亮。</p>
+
+    <h4>Step 3：背光（Back/Hair Light）</h4>
+    <div class="lighting-diagram"><img src="images/step3-three-point.jpg" alt="Complete Three-Point Lighting"></div>
+    <div class="diagram-caption">STAGE 3 · 完整三點布光</div>
+    <p>人物後方偏側面，打亮頭髮和肩膀。讓人物從背景「浮」出來，有立體感。這是完整三點布光，人物輪廓明顯與背景分離。</p>
+    <div class="tip">💡 三點布光是起點，不是公式。覺得太平？補光減弱。覺得太戲劇？補光加強。</div>
+  </div>
+
+  <div class="content-block">
+    <h3>🎨 <span class="level level-mid">進階</span> 色溫與情緒</h3>
+    <p>色溫決定畫面情緒。同一個場景，只要改變色溫，感受完全不同。</p>
+    <div class="color-temp-grid">
+      <div class="ct-card">
+        <img class="ct-img" src="images/2700k.jpg" alt="2700K 橙黃暖光">
+        <div class="ct-label">
+          <div class="ct-kelvin">2700K · 橙黃暖光</div>
+          <div class="ct-mood">溫暖 · 親密 · 懷舊</div>
+          <div class="ct-use">居家、燭光、傍晚</div>
+        </div>
+      </div>
+      <div class="ct-card">
+        <img class="ct-img" src="images/4000k.jpg" alt="4000K 中性白光">
+        <div class="ct-label">
+          <div class="ct-kelvin">4000K · 中性白光</div>
+          <div class="ct-mood">專業 · 日常 · 中性</div>
+          <div class="ct-use">辦公室、日常</div>
+        </div>
+      </div>
+      <div class="ct-card">
+        <img class="ct-img" src="images/5600k.jpg" alt="5600K 日光白">
+        <div class="ct-label">
+          <div class="ct-kelvin">5600K · 日光白</div>
+          <div class="ct-mood">清新 · 自然 · 活力</div>
+          <div class="ct-use">戶外、攝影棚標準</div>
+        </div>
+      </div>
+      <div class="ct-card">
+        <img class="ct-img" src="images/6500k.jpg" alt="6500K 冷藍光">
+        <div class="ct-label">
+          <div class="ct-kelvin">6500K+ · 冷藍光</div>
+          <div class="ct-mood">孤獨 · 壓抑 · 疏離</div>
+          <div class="ct-use">深夜、心理壓力場景</div>
+        </div>
+      </div>
+    </div>
+    <div class="highlight-box"><strong>混合色溫技巧：</strong>暖主光＋冷背景光，製造畫面色彩張力，更有電影感。許多電影刻意讓室內暖光（2700K）和窗外夜景（6500K+）同框，就是這個道理。</div>
+  </div>
+
+  <div class="content-block">
+    <h3>🌃 <span class="level level-pro">高級</span> 進階光效</h3>
+
+    <h4>Rembrandt Lighting（林布蘭光）</h4>
+    <div class="effect-block">
+      <img class="effect-img" src="images/rembrandt.jpg" alt="Rembrandt Lighting">
+      <div class="effect-caption">REMBRANDT · 暗面三角形亮斑</div>
+    </div>
+    <p>光從側面高角度打下來，臉部暗面會出現一個小三角形的亮斑（位於眼睛下方的顴骨）。最具戲劇性和繪畫感的光效，來自17世紀荷蘭畫家林布蘭的肖像作品。適合描繪人物內心深度、故事感強的場景。</p>
+
+    <h4>Split Lighting（分割光）</h4>
+    <div class="effect-block">
+      <img class="effect-img" src="images/split.jpg" alt="Split Lighting">
+      <div class="effect-caption">SPLIT · 左右對分明暗</div>
+    </div>
+    <p>光從正側面90度打，臉部一半完全亮、一半完全暗，中間有一條明確的分界線。極端對比，適合表現角色的矛盾、雙重性、內心掙扎。黑色電影（film noir）經典光效。</p>
+
+    <h4>有色光（Colored RGB Lighting）</h4>
+    <div class="effect-block">
+      <img class="effect-img" src="images/rgb.jpg" alt="Colored RGB Lighting">
+      <div class="effect-caption">RGB · 色彩層次不失真</div>
+    </div>
+    <p>關鍵是分層布光：<strong>(1)</strong> 主光用自然白光維持正確膚色，<strong>(2)</strong> 輪廓光加顏色（圖中的桃紫色）勾勒頭髮和肩膀，<strong>(3)</strong> 背景光加另一個顏色（圖中的青藍色）製造氣氛。畫面有強烈色彩層次但人物不失真，是《銀翼殺手2049》和許多現代廣告的標準打法。</p>
+  </div>
+</section>
+
+<!-- AUDIO -->
+<section id="sec-audio" class="content-section">
+  <div class="section-header"><div class="section-eyebrow">Day 4 · 收音</div><div class="section-title">聲音決定專業度</div><div class="section-desc">觀眾對聲音的容忍度遠低於畫面。嘈雜的聲音讓人立刻離開。</div></div>
+
+  <div class="content-block">
+    <h3>👂 <span class="level level-beginner">入門</span> 聲音的四個層次</h3>
+    <p>電影裡聽到的聲音從來不是單一軌道，而是四個層次疊在一起。理解這個結構，是做出「電影感聲音」的第一步。</p>
+
+    <div class="diagram-full">
+      <img src="images/audio-layers.jpg" alt="聲音四個層次分層示意圖">
+    </div>
+    <div class="diagram-caption">FOUR LAYERS OF SOUND · 聲音分層結構</div>
+
+    <div class="cards">
+      <div class="card"><div class="card-icon">🗣</div><div class="card-title">① 對白</div><div class="card-body">最重要，必須清晰。用領夾麥或槍麥近距離收音。-12dB 最前景。</div></div>
+      <div class="card"><div class="card-icon">🌲</div><div class="card-title">② 環境音</div><div class="card-body">場景的「呼吸聲」。每場景錄 30 秒空場，後製鋪底讓空間真實。</div></div>
+      <div class="card"><div class="card-icon">👟</div><div class="card-title">③ 擬音</div><div class="card-body">腳步聲、翻書聲、開門聲，後製另錄疊上，增加動作真實感。</div></div>
+      <div class="card"><div class="card-icon">🎵</div><div class="card-title">④ 配樂</div><div class="card-body">情緒引導工具，後製加入。對白時要壓低音量（ducking）。</div></div>
+    </div>
+
+    <div class="highlight-box"><strong>專業秘訣：對白永遠是王，其他三層為它服務。</strong>任何時候配樂或環境音蓋過對白，就是混音失敗。後製時要養成習慣：先把對白軌擺好，其他三層再依序加進來。</div>
+  </div>
+
+  <div class="content-block">
+    <h3>🎙 <span class="level level-beginner">入門</span> 麥克風種類</h3>
+    <h4>指向性槍麥（Shotgun）</h4>
+    <p>裝在攝影機上方或吊桿上。只收正前方聲音，排除環境噪音。適合固定場景，或當作領夾麥的備用。</p>
+    <h4>無線領夾麥（Lavalier）</h4>
+    <p>夾在演員衣領上，完全無線。演員移動也能收到清晰聲音，多人對話最方便——每位演員夾一個。</p>
+  </div>
+
+  <div class="content-block">
+    <h3>📐 <span class="level level-beginner">入門</span> 槍麥黃金位置</h3>
+    <div class="diagram-full">
+      <img src="images/shotgun-position.jpg" alt="槍麥黃金位置示意圖">
+    </div>
+    <div class="diagram-caption">SHOTGUN MIC POSITION · 槍麥黃金位置</div>
+    <p>槍麥位置是收音品質的關鍵。正確的位置：<strong>演員頭頂正上方 30-50cm，麥克風指向嘴巴（略微俯角），保持在鏡頭框架外</strong>。距離越近聲音越乾淨，但絕對不能進入畫面。</p>
+
+    <div class="formula">槍麥四大原則：
+1. 麥克風朝向嘴巴
+2. 保持在鏡頭框線外
+3. 距離越近聲音越乾淨
+4. 不要碰到衣服或頭髮</div>
+  </div>
+
+  <div class="content-block">
+    <h3>👔 <span class="level level-beginner">入門</span> 領夾麥的三種藏法</h3>
+    <div class="diagram-full">
+      <img src="images/lav-concealment.jpg" alt="領夾麥三種藏法">
+    </div>
+    <div class="diagram-caption">LAV CONCEALMENT · 三種位置比較</div>
+    <p>三種藏法各有優缺點，依照演員服裝和場景選擇：</p>
+    <ul>
+      <li><strong>① 領口內側</strong>：最好藏、音質好，但衣物移動時容易摩擦產生雜音</li>
+      <li><strong>② 第二顆扣子</strong>：標準位置、穩定可靠，但特寫鏡頭可能會被看到</li>
+      <li><strong>③ 膠帶貼皮膚</strong>：最穩定、完全無摩擦音，但需要演員同意（貼身體）</li>
+    </ul>
+    <div class="tip">💡 無論哪一種，拍攝前都請演員做轉身、點頭、伸手等幾個動作，戴耳機確認沒有摩擦聲再開始。</div>
+  </div>
+
+  <div class="content-block">
+    <h3>🎛 <span class="level level-mid">進階</span> 完整收音配置</h3>
+    <p>把所有收音元素放進雙機拍攝現場，完整圖長這樣：</p>
+    <div class="diagram-full">
+      <img src="images/audio-setup.jpg" alt="完整收音配置俯視圖">
+    </div>
+    <div class="diagram-caption">COMPLETE AUDIO SETUP · 完整收音配置</div>
+    <ul>
+      <li><strong>🔴 主收音</strong>：每位演員一個領夾麥，無線傳到接收器</li>
+      <li><strong>🟡 備用</strong>：槍麥在頭頂上方，萬一領夾麥出包的保險</li>
+      <li><strong>🔵 環境音</strong>：每個場景開拍前錄 30 秒空場，後製混音用</li>
+      <li><strong>🎧 監聽</strong>：導演一定要戴耳機，現場聽到的才是麥克風實際收到的</li>
+    </ul>
+    <div class="highlight-box"><strong>一人組收音心法：</strong>主收音＋備用永遠要有兩層。領夾麥萬一有雜訊，還能靠槍麥救回來。如果只有一套，拍到一半才發現收音出問題，整場戲就要重拍。</div>
+  </div>
+
+  <div class="content-block">
+    <h3>🔊 <span class="level level-mid">進階</span> 監聽與音量控制</h3>
+    <div class="formula">錄音目標音量：
+平均：-18dB 到 -12dB
+峰值不超過：-6dB（防破音）
+不能低於：-30dB（噪音蓋過聲音）</div>
+    <h4>每個場景開始前必做</h4>
+    <ul>
+      <li>錄30秒空場環境音（後製用）</li>
+      <li>請演員說「1、2、3、4、5」確認音量</li>
+      <li>確認沒有空調、冰箱等低頻噪音</li>
+    </ul>
+  </div>
+
+  <div class="content-block">
+    <h3>🎚 <span class="level level-pro">高級</span> 後製混音基礎</h3>
+    <ul>
+      <li><strong>對白層</strong>：EQ去除80Hz以下低頻，壓縮讓音量均勻</li>
+      <li><strong>環境音層</strong>：比對白低15～20dB，持續播放</li>
+      <li><strong>音樂層</strong>：有對白時壓低，情緒段落時拉起</li>
+    </ul>
+    <div class="table-wrap"><table class="compare-table">
+      <tr><th>問題</th><th>原因</th><th>解法</th></tr>
+      <tr><td>低頻轟聲</td><td>風聲、空調</td><td>高通濾波器（80Hz cut）</td></tr>
+      <tr><td>回音大</td><td>空曠室內</td><td>降噪插件或重新配音</td></tr>
+      <tr><td>忽大忽小</td><td>演員移動</td><td>Compressor自動增益</td></tr>
+      <tr><td>背景噪音</td><td>環境音過強</td><td>iZotope RX降噪</td></tr>
+    </table></div>
+  </div>
+</section>
+
+<!-- CAM GEAR -->
+<section id="sec-cam-gear" class="content-section">
+  <div class="section-header"><div class="section-eyebrow">器材指南 · 攝影設備</div><div class="section-title">攝影設備指南</div><div class="section-desc">S22+S23 雙機設定，以及所有必備附件的選購建議。</div></div>
+
+  <div class="content-block">
+    <h3>📱 S22 + S23 雙機設定</h3>
+
+    <h4>兩台手機統一設定</h4>
+    <div class="formula">解析度：4K 24fps
+快門速度：1/50（手動鎖定）
+白平衡：手動 5500K（兩台同值）
+色彩模式：關閉自動HDR，開LOG
+對焦：手動，關閉自動對焦
+防手震：三腳架拍攝時建議關閉</div>
+
+    <div class="table-wrap"><table class="compare-table">
+      <tr><th>角色</th><th>機型</th><th>主要工作</th></tr>
+      <tr><td class="amber">A機（主）</td><td>S23</td><td>主要構圖，中景或特寫</td></tr>
+      <tr><td>B機（副）</td><td>S22</td><td>反應鏡頭、廣角、物件特寫</td></tr>
+    </table></div>
+
+    <h4>雙機同步方法</h4>
+    <p>每顆鏡頭錄製前，在兩台鏡頭前<strong>拍手一次</strong>。後製用聲波峰值對齊，精確到幀。</p>
+  </div>
+
+  <div class="content-block">
+    <h3>🎬 真實拍片工作流</h3>
+    <p>看完了設定表格，這是一人組實際拍攝時現場長什麼樣子。</p>
+
+    <h4>現場配置：對話場景的雙機擺放</h4>
+    <div class="diagram-full">
+      <img src="images/dual-cam-layout.jpg" alt="雙機拍攝現場配置">
+    </div>
+    <div class="diagram-caption">DUAL-CAM LAYOUT · 現場俯視圖</div>
+    <p>關鍵是<strong>你（導演/攝影）站在兩台機器中間</strong>，不是躲在任何一台後面。這樣你可以同時看到兩台畫面、兩位演員、光線狀況。A機拍主角中景，B機拍反應鏡頭，一次對話戲就能拿到正反打素材。</p>
+
+    <ul>
+      <li><strong>A機（S23）</strong>：主要視覺，中景或特寫，跟著劇本意圖走</li>
+      <li><strong>B機（S22）</strong>：副線素材，反應鏡頭、物件特寫、廣角備用</li>
+      <li><strong>主光</strong>：窗戶自然光，打在演員面向的那一側</li>
+      <li><strong>反光板</strong>：放在主光對面，補齊陰影面</li>
+      <li><strong>地板膠帶 X 記號</strong>：每個演員的固定站位，確保多 take 對焦一致</li>
+    </ul>
+
+    <h4>每顆鏡頭的 SOP 八步驟</h4>
+    <div class="diagram-full">
+      <img src="images/shot-sop.jpg" alt="一人組每顆鏡頭流程 SOP">
+    </div>
+    <div class="diagram-caption">SHOT SOP · 鏡頭流程清單</div>
+    <p>一人組最容易犯的錯是「急著開拍」。當你同時是導演、攝影、收音，每顆鏡頭都要跑完這八步。熟悉之後每顆鏡頭大約 2-3 分鐘，別想省時間跳步驟，<strong>現場省 1 分鐘，剪接室要補 10 分鐘</strong>。</p>
+
+    <div class="tip">💡 把這張 SOP 圖印出來貼在拍攝現場看得到的地方，照著跑不會漏。熟悉後步驟會內化成直覺反應。</div>
+  </div>
+
+  <div class="content-block">
+    <h3>🎪 必備附件清單</h3>
+    <div class="table-wrap"><table class="compare-table">
+      <tr><th>附件</th><th>用途</th><th>預算（元）</th></tr>
+      <tr><td>三腳架＋流體雲台</td><td>固定鏡頭</td><td>1,500～3,000</td></tr>
+      <tr><td>手機穩定器</td><td>移動鏡頭</td><td>3,500 / 租400/天</td></tr>
+      <tr><td>冷靴轉接座</td><td>手機接麥克風</td><td>200～500</td></tr>
+      <tr><td>ND濾鏡夾片</td><td>室外控制曝光</td><td>300～800</td></tr>
+      <tr><td>行動電源</td><td>長時間錄影</td><td>500～800</td></tr>
+      <tr><td>散熱背夾</td><td>防過熱降頻</td><td>300～600</td></tr>
+      <tr><td>膠帶（黑＋白）</td><td>標記站位、固定線</td><td>100</td></tr>
+    </table></div>
+  </div>
+
+  <div class="content-block">
+    <h3>📲 推薦拍攝App</h3>
+    <h4>Filmic Pro（約NT$600）</h4>
+    <p>最專業的手機拍攝App，獨立控制快門、ISO、白平衡、對焦，支援LOG格式。</p>
+    <h4>Expert RAW（Samsung免費）</h4>
+    <p>官方App，支援LOG格式，操作簡單，免費是最大優點。</p>
+    <h4>Open Camera（免費）</h4>
+    <p>支援手動控制，功能比Filmic Pro少但夠用。</p>
+    <h4>Clapper（數位打板）</h4>
+    <p>記錄Scene、Take、鏡號，方便後製整理素材。</p>
+  </div>
+</section>
+
+<!-- LIGHT GEAR -->
+<section id="sec-light-gear" class="content-section">
+  <div class="section-header"><div class="section-eyebrow">器材指南 · 燈光設備</div><div class="section-title">燈光設備指南</div><div class="section-desc">從零成本到低預算，每個方案都能拍出質感。</div></div>
+
+  <div class="content-block">
+    <h3>🌟 方案A：零成本（純自然光）</h3>
+    <div class="table-wrap"><table class="compare-table">
+      <tr><th>工具</th><th>用途</th><th>費用</th></tr>
+      <tr><td>大窗戶自然光</td><td>主光</td><td>免費</td></tr>
+      <tr><td>白色牆壁</td><td>反射補光</td><td>免費</td></tr>
+      <tr><td>鋁箔紙</td><td>DIY反光板</td><td>30元</td></tr>
+      <tr><td>烘焙紙/描圖紙</td><td>柔化光源</td><td>50元</td></tr>
+    </table></div>
+    <div class="tip">💡 早上9～11點、下午3～5點是最好的窗邊光時段。</div>
+  </div>
+
+  <div class="content-block">
+    <h3>💡 方案B：低預算購買</h3>
+    <div class="table-wrap"><table class="compare-table">
+      <tr><th>設備</th><th>規格</th><th>預算（元）</th></tr>
+      <tr><td>五合一反光板</td><td>80cm以上</td><td>250～400</td></tr>
+      <tr><td>LED板燈 × 2</td><td>雙色溫可調</td><td>1,500～3,000</td></tr>
+      <tr><td>燈架 × 2</td><td>180cm以上</td><td>800～1,500</td></tr>
+      <tr><td>柔光箱</td><td>60×90cm</td><td>500～1,000</td></tr>
+      <tr><td>延長線（5米）</td><td>三孔安全型</td><td>200</td></tr>
+    </table></div>
+  </div>
+
+  <div class="content-block">
+    <h3>🎬 方案C：租借（拍攝當天）</h3>
+    <div class="formula">推薦租借清單（2天拍攝）：
+LED板燈×2（含燈架）→ 800～1,200元
+反光板（建議自購）  → 250元
+柔光箱             → 200元
+─────────────────────
+合計               → 約1,250～1,650元</div>
+    <p style="font-size:11.5px;color:var(--text-dim);margin-top:8px">租借地點：補給站BJ4、漢口街相機街、FB「台灣影視器材租借交流」</p>
+  </div>
+
+  <div class="content-block">
+    <h3>⚠️ 燈光安全注意事項</h3>
+    <ul>
+      <li><strong>燈架一定要壓重物</strong>：沙袋壓住底部，倒下來非常危險</li>
+      <li><strong>電源計算</strong>：確認插座能承受所有燈具總瓦數</li>
+      <li><strong>線材整理</strong>：電源線用膠帶固定，避免絆倒</li>
+    </ul>
+  </div>
+</section>
+
+<!-- AUDIO GEAR -->
+<section id="sec-audio-gear" class="content-section">
+  <div class="section-header"><div class="section-eyebrow">器材指南 · 收音設備</div><div class="section-title">收音設備指南</div><div class="section-desc">同樣的錢花在收音，比花在攝影設備更能提升質感。</div></div>
+
+  <div class="content-block">
+    <h3>🎤 無線領夾麥比較</h3>
+    <div class="table-wrap"><table class="compare-table">
+      <tr><th>型號</th><th>音質</th><th>特色</th><th>價格（元）</th></tr>
+      <tr><td class="amber">RODE Wireless GO II</td><td>★★★★★</td><td>2發1收，可獨立錄音</td><td>~8,500 / 租500/天</td></tr>
+      <tr><td>DJI Mic 2</td><td>★★★★☆</td><td>操作直覺，App整合佳</td><td>~7,500 / 租400/天</td></tr>
+      <tr><td>BOYA BY-WM4 Pro</td><td>★★★☆☆</td><td>輕薄便宜</td><td>~1,500</td></tr>
+    </table></div>
+    <div class="tip">💡 S22/S23用USB-C接口，選有USB-C輸出的型號，或購買轉接頭。</div>
+  </div>
+
+  <div class="content-block">
+    <h3>🔫 槍型麥克風比較</h3>
+    <div class="table-wrap"><table class="compare-table">
+      <tr><th>型號</th><th>特色</th><th>價格（元）</th></tr>
+      <tr><td class="amber">RODE VideoMicro II</td><td>免電池、小巧、裝機頂</td><td>~3,000</td></tr>
+      <tr><td>RODE NTG2</td><td>專業等級，需幻象電源</td><td>~6,000 / 租300/天</td></tr>
+      <tr><td>BOYA BY-MM1</td><td>最便宜入門選擇</td><td>~800</td></tr>
+    </table></div>
+  </div>
+
+  <div class="content-block">
+    <h3>🎧 監聽耳機（必備）</h3>
+    <ul>
+      <li><strong>Sony MDR-7506</strong>：業界標準，約3,500元，耐用</li>
+      <li><strong>Audio-Technica ATH-M40x</strong>：約3,000元，音質優</li>
+      <li><strong>Sony MDR-ZX110</strong>：入門款，約600元，堪用</li>
+    </ul>
+    <div class="warning">⚠️ 一定要封閉式耳機。不要用藍牙耳機，有延遲，無法即時監聽。</div>
+  </div>
+
+  <div class="content-block">
+    <h3>📊 預算方案總結</h3>
+    <div class="formula">極限省錢（~3,000元）：
+BOYA BY-WM4 Pro      1,500
+BOYA BY-MM1            800
+Sony MDR-ZX110         600
+USB-C轉接頭             50
+
+租借方案（拍2天，~1,400元）：
+RODE Wireless GO II  1,000
+RODE VideoMicro II     400
+
+推薦買斷（~15,000元）：
+RODE Wireless GO II  8,500
+RODE VideoMicro II   3,000
+Sony MDR-7506        3,500</div>
+  </div>
+</section>
+
+<!-- DEVICES -->
+<section id="sec-devices" class="content-section">
+  <div class="section-header"><div class="section-eyebrow">設備分析</div><div class="section-title">手機 vs 專業攝影機</div><div class="section-desc">S22/S23 與各級別專業攝影機的對比分析。</div></div>
+
+  <div class="content-block">
+    <h3>📱 四機規格比較</h3>
+    <div class="table-wrap"><table class="compare-table">
+      <tr><th>規格</th><th>S22</th><th>S23</th><th>iPhone 16</th><th>iPhone 17</th></tr>
+      <tr><td>感光元件</td><td>1/1.76"</td><td>1/1.56"</td><td>1/1.28"</td><td>1/1.14"</td></tr>
+      <tr><td>主鏡頭光圈</td><td>f/1.8</td><td>f/1.8</td><td>f/1.6</td><td>f/1.6</td></tr>
+      <tr><td>最高規格</td><td>8K/24fps</td><td>8K/30fps</td><td>4K/120fps</td><td>4K/120fps</td></tr>
+      <tr><td>LOG格式</td><td class="amber">Expert RAW</td><td class="amber">Expert RAW</td><td class="amber">Apple Log</td><td class="amber">Apple Log</td></tr>
+      <tr><td>Cinema模式</td><td>×</td><td>×</td><td>✅</td><td>✅ 增強版</td></tr>
+    </table></div>
+  </div>
+
+  <div class="content-block">
+    <h3>🎥 對應舊款專業攝影機</h3>
+    <div class="table-wrap"><table class="compare-table">
+      <tr><th>手機配置</th><th>相當於</th><th>條件</th></tr>
+      <tr><td>S22/S23 標準</td><td>Sony FS5<br>Canon XA35</td><td>充足光線、固定機位</td></tr>
+      <tr><td class="amber">S22/S23 LOG＋調色</td><td>Sony FS7 Mk I<br>BMPCC 4K</td><td>光線良好、後製到位</td></tr>
+      <tr><td>iPhone 16 Cinema</td><td>Sony FX3<br>Canon EOS C70</td><td>LOG後製</td></tr>
+      <tr><td class="amber">iPhone 17（預估）</td><td>Sony FX6<br>RED Komodo</td><td>最佳光線、ProRes RAW</td></tr>
+    </table></div>
+    <div class="warning">⚠️ 這個比較是在「同等光線、同等後製」前提下。專業機的優勢：感光元件更大、動態範圍更廣。手機在暗處差距仍然明顯。</div>
+  </div>
+
+  <div class="content-block">
+    <h3>🤝 S22+S23 vs iPhone 16+17</h3>
+    <div class="table-wrap"><table class="compare-table">
+      <tr><th>項目</th><th>S22+S23</th><th>iPhone 16+17</th></tr>
+      <tr><td>色彩一致性</td><td class="amber">★★★★★</td><td>★★★★★</td></tr>
+      <tr><td>後製調色難度</td><td>中（飽和度高）</td><td class="amber">低（Apple Log自然）</td></tr>
+      <tr><td>Cinema功能</td><td>無</td><td class="amber">有，可追焦虛化</td></tr>
+      <tr><td>成本</td><td class="amber">你已擁有，零成本</td><td>需額外購買</td></tr>
+      <tr><td>操作熟悉度</td><td class="amber">已熟悉</td><td>需重新適應</td></tr>
+    </table></div>
+    <div class="highlight-box"><strong>結論：你的S22+S23已經足夠。</strong>把預算投入燈光、收音和後製，對成片質感的提升遠大於換攝影機。</div>
+  </div>
+
+  <div class="content-block">
+    <h3>📋 質感的真正來源</h3>
+    <div class="cards">
+      <div class="card"><div class="card-icon">💡</div><div class="card-title">光線 60%</div><div class="card-body">好光線讓手機拍出電影感，壞光線讓RED拍出廉價感。</div></div>
+      <div class="card"><div class="card-icon">🎙</div><div class="card-title">聲音 30%</div><div class="card-body">清晰收音直接提升「專業感」，觀眾感知最直覺。</div></div>
+      <div class="card"><div class="card-icon">✂️</div><div class="card-title">剪輯 8%</div><div class="card-body">畫面接畫面的節奏，決定情緒是否跟著走。</div></div>
+      <div class="card"><div class="card-icon">📱</div><div class="card-title">攝影機 2%</div><div class="card-body">前三點到位後，手機和專業機差距只剩2%。</div></div>
+    </div>
+  </div>
+</section>
+
+<script>
+function showSection(id) {
+  document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  const sec = document.getElementById('sec-' + id);
+  if (sec) { sec.classList.add('active'); window.scrollTo({top:0,behavior:'smooth'}); }
+  document.querySelectorAll('.tab-btn').forEach(b => {
+    const oc = b.getAttribute('onclick');
+    if (oc && oc.includes("'" + id + "'")) b.classList.add('active');
+  });
+}
+</script>
+</body>
+</html>
